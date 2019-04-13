@@ -14,10 +14,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MuffinNetworksSimulator.Networks.Frames;
+using MuffinNetworksSimulator.Networks.ModelLayer;
+using MuffinNetworksSimulator.Networks.Protocols; 
 
 namespace MuffinNetworksSimulator
 {
-
+      
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
@@ -65,8 +68,8 @@ namespace MuffinNetworksSimulator
         /*--------------------------------------------------------------ПЕРЕМЕННЫЕ-----------------------------------------------------*/
         /*-----------------------------------------------------------------------------------------------------------------------------*/
 
-        List<CanvasDevice> CanvasDeviceList = new List<CanvasDevice>();     //Лист хранящий в себе информацию обо всех объектах находящихся на канвасе
-        List<CanvasWire> CanvasWireList = new List<CanvasWire>();           //Лист хранящий в себе информацию обо всех проводах находящихся на канвасе
+        static List<CanvasDevice> CanvasDeviceList = new List<CanvasDevice>();     //Лист хранящий в себе информацию обо всех объектах находящихся на канвасе
+        static List<CanvasWire> CanvasWireList = new List<CanvasWire>();           //Лист хранящий в себе информацию обо всех проводах находящихся на канвасе
 
         static ToolMode CurrentMode;                                        //Переменная отображающая, какой режим выбран на данный момент
         static DeviceSelected CurrentDeviceSelected;                        //Переменная отображающая, какое устройство сейчас выбранно на добавление
@@ -590,7 +593,26 @@ namespace MuffinNetworksSimulator
         /// <param name="obj">Просто, какой объект</param>
         private static void RealTime(object obj)
         {
-                        
+            foreach(var CurrentDevice in CanvasDeviceList)
+            {
+                switch (CurrentDevice.DeviceObject.Type)
+                {
+                    case DeviceType.Computer:
+                        {
+                            break;       
+                        }
+                    case DeviceType.Switch:
+                        {
+                            ChannelLevel channelLevel = new ChannelLevel();
+                            channelLevel.ExecuteProtocol(new STP(), CurrentDevice.DeviceObject);
+                            break;
+                        }
+                    case DeviceType.Router:
+                        {
+                            break;
+                        }
+                }
+            }                       
         }
     }
 }

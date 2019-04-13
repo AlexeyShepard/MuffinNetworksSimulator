@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using MuffinNetworksSimulator.Networks.ModelLayer;
+using MuffinNetworksSimulator.Networks.Frames;
 
 /// <summary>
 /// Класс описывающий общие свойства всех устройств
@@ -29,6 +31,7 @@ namespace MuffinNetworksSimulator
         public int Id;                                  // Id устройства
         public Port[] DataPorts;                        // Массив портов
 
+        public List<Frame> Cash;                        //Лист хранящий в себе фреймы
 
         /// <summary>
         /// Конструктор устройства
