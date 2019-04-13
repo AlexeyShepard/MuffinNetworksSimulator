@@ -75,6 +75,7 @@ namespace MuffinNetworksSimulator
         public int SelectedCanvasObjectId;                                  //Хранится id выделенного объекта канваса
         public int LastId = 0;                                              //Хранится самый последний введенный id
         public bool IsMoving = false;                                       //Хранится информация двигается объект или нет
+        public bool IsSelecting = false;                                    //Хранится информация выбран объект или нет
 
         /// <summary>
         /// Переменные для кэширования
@@ -85,17 +86,7 @@ namespace MuffinNetworksSimulator
         public Point CashStartPoint;                                        //Хранит начальную координату провода
         public object CashDeciceFisrt;                                      //Заполнение портов устройствами
         public object CashPort;                                             //Хранит в себе кэш порта
-
-        /// <summary>
-        /// Старые переменные
-        /// </summary>
-
-        public int CashWireId;                                              //Хранится id провода при соединении к другому объекту
-        public int CashPortIndex;                                           //Хранится index порта, для удаления при отмене соединения
-        public int CashIdCanvasObject;                                      //Хранится кэш id объекта канваса
-        public bool IsClicked = false;                                      //Хранится информация выделен объект или нет
-        //public bool AddWire = false;                                      //Режим добавления провода      
-        public bool AddWireAccess = false;                                  //Уже не помню для чего        
+        public bool AddWireAccess = false;                                  //Для проверки, есть ли свободные порты      
         public double StartLocationX, StartLocationY;                       //Хранят начальные координаты передвижения объекта канваса
 
         /*-----------------------------------------------------------------------------------------------------------------------------*/
@@ -187,6 +178,21 @@ namespace MuffinNetworksSimulator
         }
 
         /// <summary>
+        /// Выделение объекта на CvsWorkspace в зависимости от режима работа
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CanvasObject_LeftMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            switch (CurrentMode)
+            {
+                case ToolMode.Cursor: Select_CanvasDevice(sender); break;
+                case ToolMode.Delete: Delete_CanvasDevice(sender); break;
+            }
+        }
+
+
+        /// <summary>
         /// Добавление объекта в CvsWorkspace, 
         /// Cнятие выделения при нажатии за пределами объекта CvsWorkspace
         /// </summary>
@@ -197,9 +203,9 @@ namespace MuffinNetworksSimulator
             //Если выбран какой либо объект в LbObject(Кроме wire) и выбран объект Cursor в LbTools
             if (!CurrentDeviceSelected.Equals(DeviceSelected.Nothing) && !CurrentDeviceSelected.Equals(DeviceSelected.Wire) && !CurrentMode.Equals(ToolMode.Delete))
             {
-                CvsWorkspace_AddDevice(e);              
+                CvsWorkspace_AddDevice(e);
             }
-            //else CanvasObject_EmptyFieldClick(sender);
+            //else CanvasObject_EmptyFieldClick();
         }      
 
         /// <summary>
@@ -229,73 +235,6 @@ namespace MuffinNetworksSimulator
             }
 
             SelectedCanvasObjectId = -1;
-        }
-
-        /// <summary>
-        /// Выделение объекта на CvsWorkspace в зависимости от режима работа
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CanvasObject_LeftMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            switch (CurrentMode)
-            {
-                case ToolMode.Cursor: Select_CanvasDevice(sender); break;
-                case ToolMode.Delete: Delete_CanvasDevice(sender); break;
-            }            
-            /*
-            foreach (var CvsObj in CanvasObjectList.ToArray())
-            {
-                if (CvsObj.CvsObject == sender && CvsObj.CvsWireObject == null)
-                {
-                    CvsObj.CvsObject.Background = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("#b886d1");
-                    SelectedCanvasObjectId = CvsObj.DeviceObject.Id;
-                    IsClicked = true;
-                    //Для удаления
-                    if (LbTools.SelectedIndex == 3)
-                    {
-                        foreach (var Port in CvsObj.DeviceObject.PortList.ToArray())
-                        {
-                            foreach (var CvsObjj in CanvasObjectList.ToArray())
-                            {
-                                if (Port.wire != null)
-                                {
-                                    if (Port.wire.Id == CvsObjj.DeviceObject.Id)
-                                    {
-                                        foreach (var Portt in Port.wire.EndCvsObject.DeviceObject.PortList)
-                                        {
-                                            if (Portt.wire == Port.wire)
-                                            {
-                                                Port.wire = null;
-                                                Portt.wire = null;
-                                            }
-                                            /*{
-                                                MessageBox.Show(Portt.wire.EndCvsObject.DeviceObject.Id.ToString());
-                                                MessageBox.Show(Portt.wire.StartCvsObject.DeviceObject.Id.ToString());
-                                                Portt.wire.EndCvsObject = null;
-                                                Portt.wire.StartCvsObject = null;
-                                            }*/
-                                       /* }
-                                        CvsWorkspace.Children.Remove(CvsObjj.CvsWireObject);
-                                        //Port.wire = null;
-                                        //Port.IsStartPoint = false;
-                                    }
-                                }
-                            }
-                        }
-
-                        if (CvsObj.CvsObject == sender)
-                        {
-                            CanvasObjectList.Remove(CvsObj);
-                            CvsWorkspace.Children.Remove(CvsObj.CvsObject);
-                        }
-                    }     
-                }
-                else if (CvsObj.CvsWireObject == null)
-                {
-                    CvsObj.CvsObject.Background = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Transparent");
-                }
-            }   */       
         }
     
         /// <summary>
@@ -353,7 +292,6 @@ namespace MuffinNetworksSimulator
             {
                 Grid CvsObject = new Grid();
                 foreach (var CvsObj in CanvasDeviceList) if(CvsObj.DeviceObject.Id == SelectedCanvasObjectId) CvsObject = CvsObj.CanvasObject;           
-                //List<Port> PortList = CanvasDeviceList[SelectedCanvasObjectId].DeviceObject.PortList;
 
                 double CashX = Canvas.GetLeft(CvsObject);
                 double CashY = Canvas.GetTop(CvsObject);
@@ -365,32 +303,25 @@ namespace MuffinNetworksSimulator
                 Canvas.SetTop(CvsObject, e.GetPosition(CvsWorkspace).Y - 25);
 
                 //Отвечает за все подключенные провода к перемещаемуму устройства
-                /*Point CashPoint = new Point();
-                foreach (var port in PortList)
+                Point CashPoint = new Point();
+                CanvasDevice CashCanvasDevice = null;
+                foreach(var CvsDevice in CanvasDeviceList)
                 {
-                    foreach(var CvssOject in CanvasObjectList)
+                    if (CvsDevice.DeviceObject.Id == SelectedCanvasObjectId)
                     {
-                        if(port.wire != null)
-                        {
-                            if (port.wire.Id == CvssOject.DeviceObject.Id)
-                            {
-                                LineGeometry lineGeometry = (LineGeometry)CvssOject.CvsWireObject.Data;
-                                if (port.IsStartPoint)
-                                {
-                                    CashPoint.X = e.GetPosition(CvsWorkspace).X;
-                                    CashPoint.Y = e.GetPosition(CvsWorkspace).Y;
-                                    lineGeometry.StartPoint = CashPoint;
-                                }
-                                else
-                                {
-                                    CashPoint.X = e.GetPosition(CvsWorkspace).X;
-                                    CashPoint.Y = e.GetPosition(CvsWorkspace).Y;
-                                    lineGeometry.EndPoint = CashPoint;
-                                }
-                            }
-                        }                        
-                    }
-                }*/
+                        CashCanvasDevice = CvsDevice;
+                        break;
+                    } 
+                }
+                foreach(var Wire in CanvasWireList)
+                {
+                    LineGeometry lineGeometry = (LineGeometry)Wire.CanvasObject.Data;
+                    CashPoint.X = e.GetPosition(CvsWorkspace).X;
+                    CashPoint.Y = e.GetPosition(CvsWorkspace).Y;
+                    if (Wire.Device1.Equals(CashCanvasDevice)) lineGeometry.StartPoint = CashPoint;
+                    else if (Wire.Device2.Equals(CashCanvasDevice)) lineGeometry.EndPoint = CashPoint;
+
+                }
             }
             else if (AddWireState.Equals(AddWire.LastPoint))
             {
@@ -441,6 +372,7 @@ namespace MuffinNetworksSimulator
             LbObjects.SelectedIndex = -1;
             CurrentDeviceSelected = DeviceSelected.Nothing;
             this.Cursor = Cursors.Arrow;
+            IsSelecting = true;
 
             //Установка прозрачного фона для объекта канваса
             foreach (var CvsObjj in CanvasDeviceList)
@@ -452,10 +384,14 @@ namespace MuffinNetworksSimulator
         /// <summary>
         /// Срабатывает при попытке выделения пустой области
         /// </summary>
-        private void CanvasObject_EmptyFieldClick(object sender)
+        private void CanvasObject_EmptyFieldClick()
         {
-            foreach (var CvsObj in CanvasDeviceList) if (!CvsObj.CanvasObject.Equals(sender)) CvsObj.CanvasObject.Background = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Transparent");
-            SelectedCanvasObjectId = -1;
+            if(SelectedCanvasObjectId != -1)
+            {
+                foreach (var CvsObj in CanvasDeviceList) CvsObj.CanvasObject.Background = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Transparent");
+                SelectedCanvasObjectId = -1;
+                IsSelecting = false;
+            }      
         }
 
         /// <summary>
@@ -486,8 +422,42 @@ namespace MuffinNetworksSimulator
             {
                 if (CvsObj.CanvasObject.Equals(sender))
                 {
+                    //Удаление соединенных проводов
+                    foreach (var Wire in CanvasWireList.ToArray())
+                    {
+                        if (Wire.Device1.Equals(CvsObj))
+                        {
+                            //Освобождение портов
+                            foreach (var Port in Wire.Device2.DeviceObject.DataPorts)
+                            {
+                                if (Port.Device.Equals(CvsObj))
+                                {
+                                    Port.Device = null;
+                                    break;
+                                }
+                            }
+                            CanvasWireList.Remove(Wire);
+                            CvsWorkspace.Children.Remove(Wire.CanvasObject);
+                        }
+                        else if (Wire.Device2.Equals(CvsObj))
+                        {
+                            //Освобождение портов
+                            foreach (var Port in Wire.Device1.DeviceObject.DataPorts)
+                            {
+                                if (Port.Device.Equals(CvsObj))
+                                {
+                                    Port.Device = null;
+                                    break;
+                                }
+                            }
+                            CanvasWireList.Remove(Wire);
+                            CvsWorkspace.Children.Remove(Wire.CanvasObject);
+                        }
+                    }
+                    //Удаление устройства
                     CanvasDeviceList.Remove(CvsObj);
                     CvsWorkspace.Children.Remove(CvsObj.CanvasObject);
+                    SelectedCanvasObjectId = -1;
                 }
             }
         }
@@ -620,7 +590,7 @@ namespace MuffinNetworksSimulator
         /// <param name="obj">Просто, какой объект</param>
         private static void RealTime(object obj)
         {
-            
+                        
         }
     }
 }
