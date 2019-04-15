@@ -20,7 +20,8 @@ namespace MuffinNetworksSimulator.Networks.Protocols
         /// <param name="Frame">Отправляемый фрейм</param>
         public void Execute(Device Device, Frame Frame)
         {
-            Device.Cash.Add(Frame); 
+            Device.Cash.Add(Frame);
+            Device.Sniffer.Add(Frame);
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace MuffinNetworksSimulator.Networks.Protocols
         /// <summary>
         /// Чтобы было
         /// </summary>
-        public void Processing(List<Frame> Cash)
+        public void Processing(List<Frame> Cash, Device Device)
         {
             throw new Exception("Данный метод не реализуется протоколом SF");
         }

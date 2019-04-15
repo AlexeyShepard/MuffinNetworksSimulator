@@ -646,7 +646,9 @@ namespace MuffinNetworksSimulator
                         }
                     case DeviceType.Switch:
                         {
+                            
                             СhannelLevel.ExecuteProtocol(new STP(), CurrentDevice.DeviceObject);
+                            СhannelLevel.ProccessingCash(new STP(), CurrentDevice.DeviceObject.Cash, CurrentDevice.DeviceObject);
                             break;
                         }
                     case DeviceType.Router:

@@ -15,7 +15,7 @@ namespace MuffinNetworksSimulator
         public Router(int id, DeviceType type) : base(id, type)
         {
             this.DataPorts = new Port[3];
-            for (int i = 0; i < 3; i++) DataPorts[i] = new Port();
+            for (int i = 0; i < 3; i++) DataPorts[i] = new Port(i);
         }
     }
 }

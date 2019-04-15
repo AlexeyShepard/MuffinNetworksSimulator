@@ -24,7 +24,7 @@ namespace MuffinNetworksSimulator.Networks.ModelLayer
             throw new Exception("Запрещено использование данного метода, на физическом уровне!");
         }
 
-        public void ProccessingCash(IProtocols Protocol, List<Frame> Cash)
+        public void ProccessingCash(IProtocols Protocol, List<Frame> Cash, Device Device)
         {
             throw new Exception("Запрещено использование данного метода, на физическом уровне!");
         }

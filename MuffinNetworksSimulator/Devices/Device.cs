@@ -33,6 +33,7 @@ namespace MuffinNetworksSimulator
         public string MACAdress;                        // MAC адрес устройства для локальной маршрутизации 
 
         public List<Frame> Cash;                        //Лист хранящий в себе фреймы
+        public List<Frame> Sniffer;                     //Лист хранящий информацию обо всей истории хранимых фреймах на устройстве
 
         /// <summary>
         /// Конструктор устройства
@@ -44,6 +45,7 @@ namespace MuffinNetworksSimulator
             this.Id = id;
             this.Type = type;
             this.Cash = new List<Frame>();
+            this.Sniffer = new List<Frame>();
             this.MACAdress = Other.GenerateMacAdress();
         }
     }

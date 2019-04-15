@@ -15,7 +15,7 @@ namespace MuffinNetworksSimulator
         public Computer(int id, DeviceType type) : base(id, type)
         {
             this.DataPorts = new Port[1];
-            DataPorts[0] = new Port();
+            DataPorts[0] = new Port(0);
         }
     }
 }

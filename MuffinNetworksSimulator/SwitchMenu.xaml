@@ -41,6 +41,14 @@
                                     Click="BtnRandomMacaddress_Click"/>
                         </StackPanel>
                         <Canvas Height="2" Background="#130019" Margin="5 0 5 0"/>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="Root: "/>
+                            <TextBlock x:Name="TbIsRoot" Margin="5 0 0 0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="BridgePriority: "/>
+                            <TextBlock x:Name="TbBridgePriority" Margin="5 0 0 0"/>
+                        </StackPanel>
                     </StackPanel>
                 </TabItem.Content>
             </TabItem>

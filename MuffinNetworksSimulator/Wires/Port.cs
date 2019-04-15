@@ -7,13 +7,33 @@ using System.Threading.Tasks;
 namespace MuffinNetworksSimulator
 {
     /// <summary>
+    /// Роль портов для протокола STP
+    /// </summary>
+    enum PortSTPRole
+    {
+        RootPort = 0,
+        DesignatedPort,
+        NondesignatedPort,
+        DisabledPort,
+    }
+    
+    /// <summary>
     /// Физический порт устройства
     /// </summary>
     class Port
-    {
-        // Устройство подключенное по другую сторону витой пары
-        public CanvasDevice Device;
+    {       
+        public CanvasDevice Device;         // Устройство подключенное по другую сторону витой пары
+        public int ID;                      //ID порта
+        public PortSTPRole PortStpRole;     //Роль порта в STP протоколе
 
-        public Port() { }
+        /// <summary>
+        /// Инициализация порта
+        /// </summary>
+        public Port(int ID)
+        {
+            this.ID = ID;
+            //Назначаем порт, как не размеченный
+            this.PortStpRole = PortSTPRole.NondesignatedPort;    
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace MuffinNetworksSimulator.Networks.Protocols
     /// </summary>
     class STP : IProtocols
     {
+        
         /// <summary>
         /// Исполнение протокола STP
         /// </summary>
@@ -22,7 +24,12 @@ namespace MuffinNetworksSimulator.Networks.Protocols
             foreach(var Port in Device.DataPorts)
             {
                 PhysicalLayer PhysicalLayer = new PhysicalLayer();
-                if(Port.Device != null) PhysicalLayer.ExecuteProtocol(new SF(), Port.Device.DeviceObject, new BPDU(Device.MACAdress));
+                BPDU BPDU = new BPDU();
+                if (((Switch)Device).RootSwitch) BPDU = new BPDU(Device.Id, Device.Id, Port.ID, 0, Device.MACAdress);
+                else BPDU = new BPDU(Device.Id, ((Switch)Device).DeviceIDToRetranslate, Port.ID, ((Switch)Device).PathCostToRetranslate, Device.MACAdress);
+                
+                //Если в порт подключено устройство и порт не имеет root роли
+                if (Port.Device != null && !Port.PortStpRole.Equals(PortSTPRole.RootPort)) PhysicalLayer.ExecuteProtocol(new SF(), Port.Device.DeviceObject, BPDU);
             }       
         }
 
@@ -30,9 +37,18 @@ namespace MuffinNetworksSimulator.Networks.Protocols
         /// Обработка пакетов по правилам STP
         /// </summary>
         /// <param name="Cash">Кэш устройства</param>
-        public void Processing(List<Frame> Cash)
+        public void Processing(List<Frame> Cash, Device Device)
         {
-
+            foreach(var Frame in Cash)
+            {
+                if(((BPDU)Frame).BridgeID < ((Switch)Device).DeviceIDToRetranslate)
+                {
+                    ((Switch)Device).RootSwitch = false;
+                    ((Switch)Device).DeviceIDToRetranslate = ((BPDU)Frame).RootBridgeId;
+                    ((Switch)Device).PathCostToRetranslate = ((BPDU)Frame).RootPathCost++;
+                }
+            }
+            Cash.Clear();
         }
 
         /// <summary>

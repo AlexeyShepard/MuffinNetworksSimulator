@@ -28,6 +28,6 @@ namespace MuffinNetworksSimulator.Networks.Protocols
         /// <summary>
         /// Для обработки кадров/пакетов в зависимости от протокола
         /// </summary>
-        void Processing(List<Frame> Cash);
+        void Processing(List<Frame> Cash, Device Device);
     }
 }

@@ -33,7 +33,7 @@ namespace MuffinNetworksSimulator.Networks.ModelLayer
         /// </summary>
         /// <param name="Protocols">Протокол обработки</param>
         /// <param name="Cash">Кэш устройства</param>
-        void ProccessingCash(IProtocols Protocols, List<Frame> Cash);
+        void ProccessingCash(IProtocols Protocols, List<Frame> Cash, Device Device);
 
     }
 }

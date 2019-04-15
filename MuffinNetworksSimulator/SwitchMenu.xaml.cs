@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MuffinNetworksSimulator.Networks.Frames;
 
 namespace MuffinNetworksSimulator
 {
@@ -35,7 +36,10 @@ namespace MuffinNetworksSimulator
             InitializeComponent();
             CanvasDeviceCash = (CanvasDevice)CanvasDevice;
             TxbMacaddress.Text = CanvasDeviceCash.DeviceObject.MACAdress;
-            DGCash.ItemsSource = ((CanvasDevice)CanvasDevice).DeviceObject.Cash.ToList();
+            //List<Frame> CashListBPDU = ((CanvasDevice)CanvasDevice).DeviceObject.Cash.ToList();
+            DGCash.ItemsSource = ((CanvasDevice)CanvasDevice).DeviceObject.Sniffer.ToList();
+            TbIsRoot.Text = ((Switch)CanvasDeviceCash.DeviceObject).RootSwitch.ToString();
+            TbBridgePriority.Text = ((Switch)CanvasDeviceCash.DeviceObject).Id.ToString();
 
             Title = ((CanvasDevice)CanvasDevice).DeviceObject.Type.ToString() + " " + ((CanvasDevice)CanvasDevice).DeviceObject.MACAdress;
         }
