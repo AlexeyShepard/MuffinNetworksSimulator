@@ -11,6 +11,7 @@ namespace MuffinNetworksSimulator.Networks.Frames
     /// </summary>
     abstract class Frame
     {
-                  
+        public string SourceAddress { get; set; }           //Адрес источника
+        public string DestinationAdress;        //Адрес назначения
     }
 }

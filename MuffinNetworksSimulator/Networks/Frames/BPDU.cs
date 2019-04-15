@@ -9,7 +9,11 @@ namespace MuffinNetworksSimulator.Networks.Frames
     /// <summary>
     /// Описывает фрейм STP протокола
     /// </summary>
-    class BPDU
+    class BPDU : Frame
     {
+        public BPDU(string SourceAddress)
+        {
+            this.SourceAddress = SourceAddress;
+        }
     }
 }

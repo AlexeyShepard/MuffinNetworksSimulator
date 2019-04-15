@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MuffinNetworksSimulator.Networks.Protocols;
+using MuffinNetworksSimulator.Networks.Frames;
 
 namespace MuffinNetworksSimulator.Networks.ModelLayer
 {
@@ -12,9 +13,20 @@ namespace MuffinNetworksSimulator.Networks.ModelLayer
     /// </summary>
     class PhysicalLayer : IModelLayer
     {
+
+        public void ExecuteProtocol(IProtocols Protocol, Device Device, Frame Frame)
+        {
+            Protocol.Execute(Device, Frame);
+        }
+
         public void ExecuteProtocol(IProtocols Protocol, Device Device)
         {
-            Protocol.Execute(Device);
+            throw new Exception("Запрещено использование данного метода, на физическом уровне!");
+        }
+
+        public void ProccessingCash(IProtocols Protocol, List<Frame> Cash)
+        {
+            throw new Exception("Запрещено использование данного метода, на физическом уровне!");
         }
     }
 }

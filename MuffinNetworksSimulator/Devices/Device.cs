@@ -30,6 +30,7 @@ namespace MuffinNetworksSimulator
         public DeviceType Type;                         // Индекс типа устройства
         public int Id;                                  // Id устройства
         public Port[] DataPorts;                        // Массив портов
+        public string MACAdress;                        // MAC адрес устройства для локальной маршрутизации 
 
         public List<Frame> Cash;                        //Лист хранящий в себе фреймы
 
@@ -42,6 +43,8 @@ namespace MuffinNetworksSimulator
         {
             this.Id = id;
             this.Type = type;
+            this.Cash = new List<Frame>();
+            this.MACAdress = Other.GenerateMacAdress();
         }
     }
 }

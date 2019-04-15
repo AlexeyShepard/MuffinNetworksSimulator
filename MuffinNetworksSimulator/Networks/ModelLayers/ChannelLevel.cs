@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MuffinNetworksSimulator.Networks.Protocols;
+using MuffinNetworksSimulator.Networks.Frames;
 
 namespace MuffinNetworksSimulator.Networks.ModelLayer
 {
@@ -12,9 +13,32 @@ namespace MuffinNetworksSimulator.Networks.ModelLayer
     /// </summary>
     class ChannelLevel : IModelLayer
     {
+        /// <summary>
+        /// Исполнение протокола канального уровня
+        /// </summary>
+        /// <param name="Protocol">Исполняемый протокол</param>
+        /// <param name="Device">Устройство исполнитель</param>
         public void ExecuteProtocol(IProtocols Protocol, Device Device)
         {
-            Protocol.Execute(Device);                                 
-        }                 
+            Protocol.Execute(Device);
+        }
+
+        /// <summary>
+        /// Обработка кэша устройства протколом
+        /// </summary>
+        /// <param name="Protocol">Протокол обработки</param>
+        /// <param name="Cash">Кэш устройства</param>
+        public void ProccessingCash(IProtocols Protocol, List<Frame> Cash)
+        {
+            Protocol.Processing(Cash);
+        }
+
+        /// <summary>
+        /// Чтобы было
+        /// </summary>
+        public void ExecuteProtocol(IProtocols Protocol, Device Device, Frame Frame)
+        {
+            throw new Exception("Запрещено использование данного метода, на канальном уровне!");
+        }
     }
 }

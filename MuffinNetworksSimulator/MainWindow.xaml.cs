@@ -64,33 +64,39 @@ namespace MuffinNetworksSimulator
         static TimerCallback tm = new TimerCallback(RealTime);
         Timer timer = new Timer(tm, 0, 0, 1000);
 
+        /// <summary>
+        /// Инициализация уровней модели
+        /// </summary>
+        static ChannelLevel СhannelLevel = new ChannelLevel();                      //Канальный уровень
+
+
         /*-----------------------------------------------------------------------------------------------------------------------------*/
         /*--------------------------------------------------------------ПЕРЕМЕННЫЕ-----------------------------------------------------*/
         /*-----------------------------------------------------------------------------------------------------------------------------*/
 
-        static List<CanvasDevice> CanvasDeviceList = new List<CanvasDevice>();     //Лист хранящий в себе информацию обо всех объектах находящихся на канвасе
-        static List<CanvasWire> CanvasWireList = new List<CanvasWire>();           //Лист хранящий в себе информацию обо всех проводах находящихся на канвасе
+        static List<CanvasDevice> CanvasDeviceList = new List<CanvasDevice>();      //Лист хранящий в себе информацию обо всех объектах находящихся на канвасе
+        static List<CanvasWire> CanvasWireList = new List<CanvasWire>();            //Лист хранящий в себе информацию обо всех проводах находящихся на канвасе
 
-        static ToolMode CurrentMode;                                        //Переменная отображающая, какой режим выбран на данный момент
-        static DeviceSelected CurrentDeviceSelected;                        //Переменная отображающая, какое устройство сейчас выбранно на добавление
-        static AddWire AddWireState;                                        //Переменная отображающая, в каком состоянии находится добавлени витой пары
+        static ToolMode CurrentMode;                                                //Переменная отображающая, какой режим выбран на данный момент
+        static DeviceSelected CurrentDeviceSelected;                                //Переменная отображающая, какое устройство сейчас выбранно на добавление
+        static AddWire AddWireState;                                                //Переменная отображающая, в каком состоянии находится добавлени витой пары
 
-        public int SelectedCanvasObjectId;                                  //Хранится id выделенного объекта канваса
-        public int LastId = 0;                                              //Хранится самый последний введенный id
-        public bool IsMoving = false;                                       //Хранится информация двигается объект или нет
-        public bool IsSelecting = false;                                    //Хранится информация выбран объект или нет
+        public int SelectedCanvasObjectId;                                          //Хранится id выделенного объекта канваса
+        public int LastId = 0;                                                      //Хранится самый последний введенный id
+        public bool IsMoving = false;                                               //Хранится информация двигается объект или нет
+        public bool IsSelecting = false;                                            //Хранится информация выбран объект или нет
 
         /// <summary>
         /// Переменные для кэширования
         /// </summary>
 
-        public Path CashWire;                                               //Хранится графическая часть провода, которые в режиме подключения
-        public object CashCanvasDevice;                                     //Записываются данные графического представления устройства при нажатии при добавлении провода
-        public Point CashStartPoint;                                        //Хранит начальную координату провода
-        public object CashDeciceFisrt;                                      //Заполнение портов устройствами
-        public object CashPort;                                             //Хранит в себе кэш порта
-        public bool AddWireAccess = false;                                  //Для проверки, есть ли свободные порты      
-        public double StartLocationX, StartLocationY;                       //Хранят начальные координаты передвижения объекта канваса
+        public Path CashWire;                                                       //Хранится графическая часть провода, которые в режиме подключения
+        public object CashCanvasDevice;                                             //Записываются данные графического представления устройства при нажатии при добавлении провода
+        public Point CashStartPoint;                                                //Хранит начальную координату провода
+        public object CashDeciceFisrt;                                              //Заполнение портов устройствами
+        public object CashPort;                                                     //Хранит в себе кэш порта
+        public bool AddWireAccess = false;                                          //Для проверки, есть ли свободные порты      
+        public double StartLocationX, StartLocationY;                               //Хранят начальные координаты передвижения объекта канваса
 
         /*-----------------------------------------------------------------------------------------------------------------------------*/
         /*--------------------------------------------------------------СОБЫТИЯ--------------------------------------------------------*/
@@ -108,6 +114,8 @@ namespace MuffinNetworksSimulator
             CurrentMode = ToolMode.Cursor;
             CurrentDeviceSelected = DeviceSelected.Nothing;
             AddWireState = AddWire.StartPoint;
+
+            
         }
 
         /// <summary>
@@ -234,7 +242,7 @@ namespace MuffinNetworksSimulator
 
             foreach (var CvsObj in CanvasDeviceList)
             {
-                 CvsObj.CanvasObject.Background = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Transparent");
+                CvsObj.CanvasObject.Background = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Transparent");
             }
 
             SelectedCanvasObjectId = -1;
@@ -343,6 +351,40 @@ namespace MuffinNetworksSimulator
             }
         }
 
+        /// <summary>
+        /// Открытие меню объекта канваса
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CanvasDevice_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Select_CanvasDevice(sender);
+            foreach (var CanvasDevice in CanvasDeviceList)
+            {
+                if (CanvasDevice.CanvasObject.Equals(sender))
+                {
+                    switch (CanvasDevice.DeviceObject.Type)
+                    {
+                        case DeviceType.Computer:
+                            {
+                                break;
+                            }
+                        case DeviceType.Router:
+                            {
+                                break;
+                            }
+                        case DeviceType.Switch:
+                            {
+                                SwitchMenu SwitchMenu = new SwitchMenu(CanvasDevice);
+                                SwitchMenu.Show();
+                                break;
+                            }
+                    }
+                    break;
+                }
+            }
+        }
+
         /*-----------------------------------------------------------------------------------------------------------------------------*/
         /*--------------------------------------------------------------ПРОЦЕДУРЫ------------------------------------------------------*/
         /*-----------------------------------------------------------------------------------------------------------------------------*/
@@ -360,6 +402,7 @@ namespace MuffinNetworksSimulator
             canvasDevice.CanvasObject.MouseLeftButtonDown += CanvasObject_LeftMouseDown;
             canvasDevice.CanvasObject.MouseDown += CanvasObject_MouseDown;
             canvasDevice.CanvasObject.MouseUp += CanvasObject_MouseUp;
+            canvasDevice.CanvasObject.MouseRightButtonDown += CanvasDevice_MouseRightButtonDown;
 
             //Добавление на рабочую область
             CvsWorkspace.Children.Add(canvasDevice.CanvasObject);
@@ -603,8 +646,7 @@ namespace MuffinNetworksSimulator
                         }
                     case DeviceType.Switch:
                         {
-                            ChannelLevel channelLevel = new ChannelLevel();
-                            channelLevel.ExecuteProtocol(new STP(), CurrentDevice.DeviceObject);
+                            СhannelLevel.ExecuteProtocol(new STP(), CurrentDevice.DeviceObject);
                             break;
                         }
                     case DeviceType.Router:
