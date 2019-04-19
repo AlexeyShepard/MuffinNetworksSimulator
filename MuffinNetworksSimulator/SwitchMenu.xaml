@@ -12,10 +12,44 @@
         MaxHeight="800"
         MaxWidth="800"
         MinWidth="800"
-        Width="800"
-        Closing="Window_Closing">
+        Width="800">
     <Grid>
-        <TabControl TabStripPlacement="Left" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ToolBar>
+            <Button>
+                <Button.Content>
+                    <Image Source="icon/onoff.png" 
+                               Width="20" 
+                               Height="20"/>
+                </Button.Content>
+            </Button>
+            <Button x:Name="BtnReload"
+                    Click="BtnReload_Click">
+                <Button.Content>
+                    <Image Source="icon/reload.png" 
+                           Width="20" 
+                           Height="20"/>
+                </Button.Content>
+            </Button>
+            <Button x:Name="BtnClear"
+                    Click="BtnClear_Click">
+                <Button.Content>
+                    <Image Source="icon/delete.png" 
+                           Width="20" 
+                           Height="20"/>
+                </Button.Content>
+            </Button>
+            <Separator/>
+            <Button x:Name="BtnSniffering"
+                    Click="BtnSniffering_Click"
+                    Content="Start Sniffer"/>
+        </ToolBar>
+        <TabControl x:Name="TabControl"
+                    TabStripPlacement="Left" 
+                    Grid.Row="1">
             <TabItem Width="50">
                 <TabItem.Header>
                     <TextBlock Text="Settings"/>
@@ -28,15 +62,15 @@
                                                 Width="105"
                                                 Mask="AA:AA:AA:AA:AA:AA"/>
                             <Button x:Name="BtnEditMacaddress"
-                                    Content="Изменить" 
+                                    Content="Edit" 
                                     Margin="5 0 0 0"
                                     Click="BtnEditMacaddress_Click"/>
                             <Button x:Name="BtnCancelMacaddress"
-                                    Content="Отменить" 
+                                    Content="Cancel" 
                                     Margin="5 0 0 0"
                                     Click="BtnCancelMacaddress_Click"/>
                             <Button x:Name="BtnRandomMacaddress"
-                                    Content="Случаный" 
+                                    Content="Random" 
                                     Margin="5 0 0 0"
                                     Click="BtnRandomMacaddress_Click"/>
                         </StackPanel>
@@ -52,12 +86,13 @@
                     </StackPanel>
                 </TabItem.Content>
             </TabItem>
-            <TabItem Width="50">
+            <TabItem Width="50"
+                     x:Name="TISniffer">
                 <TabItem.Header >
                     <TextBlock Text="Sniffer"/>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <DataGrid x:Name="DGCash" AutoGenerateColumns="true">
+                    <DataGrid x:Name="DGSniffer" AutoGenerateColumns="true">
                     </DataGrid>
                 </TabItem.Content>
             </TabItem>

@@ -31,6 +31,7 @@ namespace MuffinNetworksSimulator
         public int Id;                                  // Id устройства
         public Port[] DataPorts;                        // Массив портов
         public string MACAdress;                        // MAC адрес устройства для локальной маршрутизации 
+        public bool IsSniffering;                       //Включем/Выключен режим снифферинга 
 
         public List<Frame> Cash;                        //Лист хранящий в себе фреймы
         public List<Frame> Sniffer;                     //Лист хранящий информацию обо всей истории хранимых фреймах на устройстве
@@ -47,6 +48,7 @@ namespace MuffinNetworksSimulator
             this.Cash = new List<Frame>();
             this.Sniffer = new List<Frame>();
             this.MACAdress = Other.GenerateMacAdress();
+            this.IsSniffering = false;
         }
     }
 }

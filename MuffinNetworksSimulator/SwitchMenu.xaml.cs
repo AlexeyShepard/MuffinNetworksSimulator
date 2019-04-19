@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,8 +25,9 @@ namespace MuffinNetworksSimulator
         /// Инициализация таймера реального времени
         /// </summary>
         //static TimerCallback tm = new TimerCallback(RealTime);
-        //Timer timer = new Timer(tm, 0, 0, 1000);
+        //Timer timer = new Timer(tm, 1000, 1000, 1000);
         static CanvasDevice CanvasDeviceCash;
+        static DataGrid DGSnifferCash;
 
         /// <summary>
         /// Конструктор для инициализации окна
@@ -34,28 +36,19 @@ namespace MuffinNetworksSimulator
         public SwitchMenu(object CanvasDevice)
         {
             InitializeComponent();
+
+            DGSniffer.ItemsSource = new List<Networks.Frames.Frame>();
+            DGSnifferCash = DGSniffer;
             CanvasDeviceCash = (CanvasDevice)CanvasDevice;
             TxbMacaddress.Text = CanvasDeviceCash.DeviceObject.MACAdress;
-            //List<Frame> CashListBPDU = ((CanvasDevice)CanvasDevice).DeviceObject.Cash.ToList();
-            DGCash.ItemsSource = ((CanvasDevice)CanvasDevice).DeviceObject.Sniffer.ToList();
+            DGSniffer.ItemsSource = ((CanvasDevice)CanvasDevice).DeviceObject.Sniffer.ToList();
             TbIsRoot.Text = ((Switch)CanvasDeviceCash.DeviceObject).RootSwitch.ToString();
             TbBridgePriority.Text = ((Switch)CanvasDeviceCash.DeviceObject).Id.ToString();
 
             Title = ((CanvasDevice)CanvasDevice).DeviceObject.Type.ToString() + " " + ((CanvasDevice)CanvasDevice).DeviceObject.MACAdress;
-        }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// Срабатывает, каждый интервал срабатывания таймера
-        /// </summary>
-        /// <param name="obj">Просто, какой объект</param>
-        private static void RealTime(object obj)
-        {
-            //DGCash.ItemsSource = CanvasDeviceCash.DeviceObject.Cash.ToList();          
+            if (CanvasDeviceCash.DeviceObject.IsSniffering) BtnSniffering.Content = "Stop Sniffer";
+            else BtnSniffering.Content = "Start Sniffer";
         }
 
         /// <summary>
@@ -87,6 +80,9 @@ namespace MuffinNetworksSimulator
             }
             if (Access1)
             {
+                Port[] CashDataPort = CanvasDeviceCash.DeviceObject.DataPorts;
+                CanvasDeviceCash.DeviceObject = new Switch(CanvasDeviceCash.DeviceObject.Id, DeviceType.Switch);
+                CanvasDeviceCash.DeviceObject.DataPorts = CashDataPort;
                 CanvasDeviceCash.DeviceObject.MACAdress = TxbMacaddress.Text;
                 Title = CanvasDeviceCash.DeviceObject.Type.ToString() + " " + CanvasDeviceCash.DeviceObject.MACAdress;
             }
@@ -115,6 +111,46 @@ namespace MuffinNetworksSimulator
         private void BtnRandomMacaddress_Click(object sender, RoutedEventArgs e)
         {
             TxbMacaddress.Text = Other.GenerateMacAdress();
+        }
+
+        /// <summary>
+        /// Обновление всех полей
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnReload_Click(object sender, RoutedEventArgs e)
+        {
+            BindingOperations.EnableCollectionSynchronization(CanvasDeviceCash.DeviceObject.Sniffer, DGSnifferCash);
+            DGSnifferCash.ItemsSource = CanvasDeviceCash.DeviceObject.Sniffer.ToList();
+            TbIsRoot.Text = ((Switch)CanvasDeviceCash.DeviceObject).RootSwitch.ToString();
+        }
+
+        /// <summary>
+        /// Очищение истории
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnClear_Click(object sender, RoutedEventArgs e)
+        {
+            CanvasDeviceCash.DeviceObject.Sniffer.Clear();
+            BindingOperations.EnableCollectionSynchronization(CanvasDeviceCash.DeviceObject.Sniffer, DGSnifferCash);
+            DGSnifferCash.ItemsSource = CanvasDeviceCash.DeviceObject.Sniffer.ToList();
+        }
+
+        /// <summary>
+        /// Срабатывает, каждый интервал срабатывания таймера
+        /// </summary>
+        /// <param name="obj">Просто, какой объект</param>
+        private static void RealTime(object obj)
+        {
+        }
+
+        private void BtnSniffering_Click(object sender, RoutedEventArgs e)
+        {
+            CanvasDeviceCash.DeviceObject.IsSniffering = !CanvasDeviceCash.DeviceObject.IsSniffering;
+
+            if (CanvasDeviceCash.DeviceObject.IsSniffering) BtnSniffering.Content = "Stop Sniffer";
+            else BtnSniffering.Content = "Start Sniffer";
         }
     }
 }

@@ -476,11 +476,15 @@ namespace MuffinNetworksSimulator
                             //Освобождение портов
                             foreach (var Port in Wire.Device2.DeviceObject.DataPorts)
                             {
-                                if (Port.Device.Equals(CvsObj))
+                                //УБРАТЬ УСЛОВИЕ, ЕСЛИ ВОЗНИКАЮТ ОШИБКИ ПРИ УДАЛЕНИИ
+                                if (Port.Device != null && Port != null)
                                 {
-                                    Port.Device = null;
-                                    break;
-                                }
+                                    if (Port.Device.Equals(CvsObj))
+                                    {
+                                        Port.Device = null;
+                                        break;
+                                    }
+                                }                                
                             }
                             CanvasWireList.Remove(Wire);
                             CvsWorkspace.Children.Remove(Wire.CanvasObject);
@@ -490,11 +494,15 @@ namespace MuffinNetworksSimulator
                             //Освобождение портов
                             foreach (var Port in Wire.Device1.DeviceObject.DataPorts)
                             {
-                                if (Port.Device.Equals(CvsObj))
+                                //УБРАТЬ УСЛОВИЕ, ЕСЛИ ВОЗНИКАЮТ ОШИБКИ ПРИ УДАЛЕНИИ
+                                if (Port.Device != null && Port != null)
                                 {
-                                    Port.Device = null;
-                                    break;
-                                }
+                                    if (Port.Device.Equals(CvsObj))
+                                    {
+                                        Port.Device = null;
+                                        break;
+                                    }
+                                }                                   
                             }
                             CanvasWireList.Remove(Wire);
                             CvsWorkspace.Children.Remove(Wire.CanvasObject);

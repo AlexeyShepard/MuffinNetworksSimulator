@@ -172,6 +172,11 @@
   <ItemGroup>
     <Resource Include="icon\router.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="icon\reload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon\onoff.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

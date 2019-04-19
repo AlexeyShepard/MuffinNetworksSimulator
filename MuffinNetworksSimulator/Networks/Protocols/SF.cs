@@ -20,8 +20,11 @@ namespace MuffinNetworksSimulator.Networks.Protocols
         /// <param name="Frame">Отправляемый фрейм</param>
         public void Execute(Device Device, Frame Frame)
         {
+            //Время отправки фрейма
+            Frame.Time = DateTime.Now.TimeOfDay;
             Device.Cash.Add(Frame);
-            Device.Sniffer.Add(Frame);
+            //Если запущен режим Sniffering
+            if (Device.IsSniffering) Device.Sniffer.Add(Frame);
         }
 
         /// <summary>
