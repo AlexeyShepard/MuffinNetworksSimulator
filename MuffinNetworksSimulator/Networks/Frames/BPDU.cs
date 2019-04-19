@@ -23,10 +23,10 @@ namespace MuffinNetworksSimulator.Networks.Frames
         /// <param name="RootDridgeID">ID root моста в подсети</param>
         /// <param name="PortID">ID порта моста отправителя</param>
         /// <param name="RootPathCost">Стоимость пути до root моста</param>
-        public BPDU(int BridgeID, int RootDridgeID, int PortID, int RootPathCost, string SourceAddress)
+        public BPDU(int BridgeID, int RootBridgeIDd, int PortID, int RootPathCost, string SourceAddress)
         {
             this.BridgeID = BridgeID;
-            this.RootBridgeId = RootBridgeId;
+            this.RootBridgeId = RootBridgeIDd;
             this.RootPathCost = RootPathCost;
             this.PortID = PortID;
             this.FrameType = FrameType.BPDU;

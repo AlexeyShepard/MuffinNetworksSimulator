@@ -42,8 +42,11 @@ namespace MuffinNetworksSimulator
             CanvasDeviceCash = (CanvasDevice)CanvasDevice;
             TxbMacaddress.Text = CanvasDeviceCash.DeviceObject.MACAdress;
             DGSniffer.ItemsSource = ((CanvasDevice)CanvasDevice).DeviceObject.Sniffer.ToList();
+            DGPorts.ItemsSource = ((CanvasDevice)CanvasDevice).DeviceObject.DataPorts.ToList();
             TbIsRoot.Text = ((Switch)CanvasDeviceCash.DeviceObject).RootSwitch.ToString();
             TbBridgePriority.Text = ((Switch)CanvasDeviceCash.DeviceObject).Id.ToString();
+            TbRootIdToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).DeviceIDToRetranslate.ToString();
+            TbPathCostToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).PathCostToRetranslate.ToString();
 
             Title = ((CanvasDevice)CanvasDevice).DeviceObject.Type.ToString() + " " + ((CanvasDevice)CanvasDevice).DeviceObject.MACAdress;
 
@@ -123,6 +126,8 @@ namespace MuffinNetworksSimulator
             BindingOperations.EnableCollectionSynchronization(CanvasDeviceCash.DeviceObject.Sniffer, DGSnifferCash);
             DGSnifferCash.ItemsSource = CanvasDeviceCash.DeviceObject.Sniffer.ToList();
             TbIsRoot.Text = ((Switch)CanvasDeviceCash.DeviceObject).RootSwitch.ToString();
+            TbRootIdToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).DeviceIDToRetranslate.ToString();
+            TbPathCostToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).PathCostToRetranslate.ToString();
         }
 
         /// <summary>

@@ -101,9 +101,26 @@
                     <TextBlock Text="Ports"/>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <DataGrid>
+                    <DataGrid x:Name="DGPorts" AutoGenerateColumns="True">
 
                     </DataGrid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="STP"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="Root id to retranslate: "/>
+                            <TextBlock x:Name="TbRootIdToRetranslate" Margin="5 0 0 0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="Path cost to retranslate: "/>
+                            <TextBlock x:Name="TbPathCostToRetranslate" Margin="5 0 0 0"/>
+                        </StackPanel>
+                    </StackPanel>
                 </TabItem.Content>
             </TabItem>
         </TabControl>

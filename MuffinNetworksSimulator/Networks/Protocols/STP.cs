@@ -25,8 +25,7 @@ namespace MuffinNetworksSimulator.Networks.Protocols
             {
                 PhysicalLayer PhysicalLayer = new PhysicalLayer();
                 BPDU BPDU = new BPDU();
-                if (((Switch)Device).RootSwitch) BPDU = new BPDU(Device.Id, Device.Id, Port.ID, 0, Device.MACAdress);
-                else BPDU = new BPDU(Device.Id, ((Switch)Device).DeviceIDToRetranslate, Port.ID, ((Switch)Device).PathCostToRetranslate, Device.MACAdress);
+                BPDU = new BPDU(Device.Id, ((Switch)Device).DeviceIDToRetranslate, Port.ID, ((Switch)Device).PathCostToRetranslate, Device.MACAdress);
                 
                 //Если в порт подключено устройство и порт не имеет root роли
                 if (Port.Device != null && !Port.PortStpRole.Equals(PortSTPRole.RootPort)) PhysicalLayer.ExecuteProtocol(new SF(), Port.Device.DeviceObject, BPDU);
@@ -39,13 +38,13 @@ namespace MuffinNetworksSimulator.Networks.Protocols
         /// <param name="Cash">Кэш устройства</param>
         public void Processing(List<Frame> Cash, Device Device)
         {
-            foreach(var Frame in Cash)
+            foreach(var Frame in Cash.ToArray())
             {
                 if(((BPDU)Frame).BridgeID < ((Switch)Device).DeviceIDToRetranslate)
                 {
                     ((Switch)Device).RootSwitch = false;
-                    ((Switch)Device).DeviceIDToRetranslate = ((BPDU)Frame).RootBridgeId;
-                    ((Switch)Device).PathCostToRetranslate = ((BPDU)Frame).RootPathCost++;
+                    ((Switch)Device).DeviceIDToRetranslate = ((BPDU)Frame).RootBridgeId; 
+                    ((Switch)Device).PathCostToRetranslate = ((BPDU)Frame).RootPathCost + 1;
                 }
             }
             Cash.Clear();
