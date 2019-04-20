@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Threading;
 using MuffinNetworksSimulator.Networks.ModelLayer;
 using MuffinNetworksSimulator.Networks.Frames;
 
@@ -21,12 +22,13 @@ namespace MuffinNetworksSimulator
         Router,
         Switch
     }
-    
+
     /// <summary>
     /// Абстрактный класс для всех устройств
     /// </summary>
     abstract class Device
     {
+       
         public DeviceType Type;                         // Индекс типа устройства
         public int Id;                                  // Id устройства
         public Port[] DataPorts;                        // Массив портов
@@ -35,6 +37,13 @@ namespace MuffinNetworksSimulator
 
         public List<Frame> Cash;                        //Лист хранящий в себе фреймы
         public List<Frame> Sniffer;                     //Лист хранящий информацию обо всей истории хранимых фреймах на устройстве
+        public List<BPDU> CashBPDU;
+
+        /// <summary>
+        /// Свойства таймера реального времени
+        /// </summary>
+        public static TimerCallback tm;
+        public Timer timer;
 
         /// <summary>
         /// Конструктор устройства
@@ -47,6 +56,7 @@ namespace MuffinNetworksSimulator
             this.Type = type;
             this.Cash = new List<Frame>();
             this.Sniffer = new List<Frame>();
+            this.CashBPDU = new List<BPDU>();
             this.MACAdress = Other.GenerateMacAdress();
             this.IsSniffering = false;
         }

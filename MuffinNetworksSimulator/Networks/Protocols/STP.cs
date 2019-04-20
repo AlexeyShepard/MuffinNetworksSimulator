@@ -21,14 +21,16 @@ namespace MuffinNetworksSimulator.Networks.Protocols
         /// <param name="Device">Исполняемое устройство</param>
         public void Execute(Device Device)
         {
-            foreach(var Port in Device.DataPorts)
+            PhysicalLayer PhysicalLayer = new PhysicalLayer();
+            BPDU BPDU = new BPDU();
+            foreach (var Port in Device.DataPorts)
             {
-                PhysicalLayer PhysicalLayer = new PhysicalLayer();
-                BPDU BPDU = new BPDU();
                 BPDU = new BPDU(Device.Id, ((Switch)Device).DeviceIDToRetranslate, Port.ID, ((Switch)Device).PathCostToRetranslate, Device.MACAdress);
                 
                 //Если в порт подключено устройство и порт не имеет root роли
-                if (Port.Device != null && !Port.PortStpRole.Equals(PortSTPRole.RootPort)) PhysicalLayer.ExecuteProtocol(new SF(), Port.Device.DeviceObject, BPDU);
+                if (Port.Device != null && ((Switch)Device).RootSwitch) PhysicalLayer.ExecuteProtocol(new SF(), Port.Device.DeviceObject, BPDU);
+
+                if (Port.Device != null && Port.PortStpRole.Equals(PortSTPRole.NondesignatedPort)) Port.PortStpRole = PortSTPRole.DisabledPort;
             }       
         }
 
@@ -38,15 +40,90 @@ namespace MuffinNetworksSimulator.Networks.Protocols
         /// <param name="Cash">Кэш устройства</param>
         public void Processing(List<Frame> Cash, Device Device)
         {
-            foreach(var Frame in Cash.ToArray())
+            //Обнаружение root моста и изменение полей BPDU пакета
+            foreach (var Frame in Cash)
             {
-                if(((BPDU)Frame).BridgeID < ((Switch)Device).DeviceIDToRetranslate)
+                if (Frame.FrameType.Equals(FrameType.BPDU))
                 {
-                    ((Switch)Device).RootSwitch = false;
-                    ((Switch)Device).DeviceIDToRetranslate = ((BPDU)Frame).RootBridgeId; 
-                    ((Switch)Device).PathCostToRetranslate = ((BPDU)Frame).RootPathCost + 1;
-                }
+                    if (((BPDU)Frame).RootBridgeId < ((Switch)Device).DeviceIDToRetranslate)
+                    {
+                        ((Switch)Device).RootSwitch = false;
+                        ((Switch)Device).DeviceIDToRetranslate = ((BPDU)Frame).RootBridgeId;
+                        ((Switch)Device).PathCostToRetranslate = ((BPDU)Frame).RootPathCost + 1;
+
+                        foreach (var Port in Device.DataPorts) if (Port.Device != null)
+                        {
+                            if (Port.Device.DeviceObject.MACAdress == ((BPDU)Frame).SourceAddress)
+                            {
+                                Port.PortStpRole = PortSTPRole.RootPort;
+                                Port.Device.DeviceObject.DataPorts[((BPDU)Frame).PortID].PortStpRole = PortSTPRole.DesignatedPort;
+                            }
+                        }  
+
+                        PhysicalLayer PhysicalLayer = new PhysicalLayer();
+                        BPDU BPDU = new BPDU();
+
+                        //Ретрансляция пакета
+                        foreach (var Port in Device.DataPorts)
+                        {
+                            BPDU = new BPDU(Device.Id, ((Switch)Device).DeviceIDToRetranslate, Port.ID, ((Switch)Device).PathCostToRetranslate, Device.MACAdress);
+                            if (Port.Device != null && !Port.PortStpRole.Equals(PortSTPRole.RootPort)) PhysicalLayer.ExecuteProtocol(new SF(), Port.Device.DeviceObject, BPDU);
+                        }
+                    }
+                }               
             }
+
+            //Ретрансляция дальше полученного пакета от root моста
+            foreach (var Frame in Cash)
+            {
+                if (Frame.FrameType.Equals(FrameType.BPDU))
+                {
+                    bool exit = false;
+                    if (((BPDU)Frame).RootBridgeId == ((Switch)Device).DeviceIDToRetranslate)
+                    {
+                        PhysicalLayer PhysicalLayer = new PhysicalLayer();
+                        BPDU BPDU = new BPDU();
+
+                        foreach (var Port in Device.DataPorts)
+                        {
+                            BPDU = new BPDU(Device.Id, ((Switch)Device).DeviceIDToRetranslate, Port.ID, ((Switch)Device).PathCostToRetranslate, Device.MACAdress);
+                            if (Port.Device != null && !Port.PortStpRole.Equals(PortSTPRole.RootPort))
+                            {
+                                //MessageBox.Show("Попёр спам!!");
+                                PhysicalLayer.ExecuteProtocol(new SF(), Port.Device.DeviceObject, BPDU);
+                                exit = true;
+                            }
+                        }
+                        if (exit) break;
+                    }
+                }                    
+            }
+
+
+            //Переключение root роли, если находится порт с меньшим путём до root моста
+            foreach (var Frame in Cash)
+            {
+                if (Frame.FrameType.Equals(FrameType.BPDU))
+                {
+                    if (((BPDU)Frame).RootBridgeId == ((Switch)Device).DeviceIDToRetranslate && ((BPDU)Frame).RootPathCost < ((Switch)Device).PathCostToRetranslate - 1)
+                    {
+                        foreach (var Port in Device.DataPorts)
+                        {
+                            if (Port.Device != null)
+                            {
+                                if (Port.PortStpRole.Equals(PortSTPRole.RootPort)) Port.PortStpRole = PortSTPRole.NondesignatedPort;
+                                if (Port.Device.DeviceObject.MACAdress == ((BPDU)Frame).SourceAddress)
+                                {
+                                    Port.PortStpRole = PortSTPRole.RootPort;
+                                    ((Switch)Device).PathCostToRetranslate = ((BPDU)Frame).RootPathCost + 1;
+                                    Port.Device.DeviceObject.DataPorts[((BPDU)Frame).PortID].PortStpRole = PortSTPRole.DesignatedPort;
+                                }
+                            }
+                        }
+                    }
+                }                    
+            }
+            
             Cash.Clear();
         }
 

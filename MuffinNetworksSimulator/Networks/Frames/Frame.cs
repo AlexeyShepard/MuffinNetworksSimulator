@@ -20,6 +20,5 @@ namespace MuffinNetworksSimulator.Networks.Frames
         public string DestinationAdress { get; set; }           //Адрес назначения
         public FrameType FrameType { get; set; }                //Тип фрейма
         public TimeSpan Time { get; set; }                  //Время прибытия кадра
-
     }
 }

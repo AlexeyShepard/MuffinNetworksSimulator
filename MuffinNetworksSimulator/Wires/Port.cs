@@ -21,8 +21,8 @@ namespace MuffinNetworksSimulator
     /// Физический порт устройства
     /// </summary>
     class Port
-    {       
-        public CanvasDevice Device { get; set; }         // Устройство подключенное по другую сторону витой пары
+    {
+        public CanvasDevice Device;                      // Устройство подключенное по другую сторону витой пары
         public int ID { get; set; }                      //ID порта
         public PortSTPRole PortStpRole { get; set; }     //Роль порта в STP протоколе
 

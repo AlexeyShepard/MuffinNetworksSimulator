@@ -123,6 +123,16 @@
                     </StackPanel>
                 </TabItem.Content>
             </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="BPDU"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <DataGrid x:Name="DGBPDU" AutoGenerateColumns="True">
+                        
+                    </DataGrid>
+                </TabItem.Content>
+            </TabItem>
         </TabControl>
     </Grid>           
 </Window>

@@ -128,6 +128,9 @@ namespace MuffinNetworksSimulator
             TbIsRoot.Text = ((Switch)CanvasDeviceCash.DeviceObject).RootSwitch.ToString();
             TbRootIdToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).DeviceIDToRetranslate.ToString();
             TbPathCostToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).PathCostToRetranslate.ToString();
+
+
+            DGBPDU.ItemsSource = ((CanvasDevice)CanvasDeviceCash).DeviceObject.CashBPDU.ToList();
         }
 
         /// <summary>
@@ -140,14 +143,6 @@ namespace MuffinNetworksSimulator
             CanvasDeviceCash.DeviceObject.Sniffer.Clear();
             BindingOperations.EnableCollectionSynchronization(CanvasDeviceCash.DeviceObject.Sniffer, DGSnifferCash);
             DGSnifferCash.ItemsSource = CanvasDeviceCash.DeviceObject.Sniffer.ToList();
-        }
-
-        /// <summary>
-        /// Срабатывает, каждый интервал срабатывания таймера
-        /// </summary>
-        /// <param name="obj">Просто, какой объект</param>
-        private static void RealTime(object obj)
-        {
         }
 
         private void BtnSniffering_Click(object sender, RoutedEventArgs e)

@@ -645,7 +645,7 @@
                              Height="60"
                              Style="{DynamicResource ListBoxItemStyle}">
                     <Image Source="icon/wire.png" 
-                           Margin="13 0 0 0" 
+                           Margin="10 0 0 0" 
                            Height="45"/>
                 </ListBoxItem>
             </ListBox>

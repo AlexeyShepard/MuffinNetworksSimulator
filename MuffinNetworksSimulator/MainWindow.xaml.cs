@@ -59,16 +59,15 @@ namespace MuffinNetworksSimulator
         }
 
         /// <summary>
+        /// Инициализация уровней сети
+        /// </summary>
+        static ChannelLevel ChannelLevel = new ChannelLevel();
+
+        /// <summary>
         /// Инициализация таймера реального времени
         /// </summary>
         static TimerCallback tm = new TimerCallback(RealTime);
         Timer timer = new Timer(tm, 0, 0, 1000);
-
-        /// <summary>
-        /// Инициализация уровней модели
-        /// </summary>
-        static ChannelLevel СhannelLevel = new ChannelLevel();                      //Канальный уровень
-
 
         /*-----------------------------------------------------------------------------------------------------------------------------*/
         /*--------------------------------------------------------------ПЕРЕМЕННЫЕ-----------------------------------------------------*/
@@ -482,6 +481,7 @@ namespace MuffinNetworksSimulator
                                     if (Port.Device.Equals(CvsObj))
                                     {
                                         Port.Device = null;
+                                        Port.PortStpRole = PortSTPRole.NondesignatedPort;
                                         break;
                                     }
                                 }                                
@@ -500,6 +500,7 @@ namespace MuffinNetworksSimulator
                                     if (Port.Device.Equals(CvsObj))
                                     {
                                         Port.Device = null;
+                                        Port.PortStpRole = PortSTPRole.NondesignatedPort;
                                         break;
                                     }
                                 }                                   
@@ -654,9 +655,8 @@ namespace MuffinNetworksSimulator
                         }
                     case DeviceType.Switch:
                         {
-                            
-                            СhannelLevel.ExecuteProtocol(new STP(), CurrentDevice.DeviceObject);
-                            СhannelLevel.ProccessingCash(new STP(), CurrentDevice.DeviceObject.Cash, CurrentDevice.DeviceObject);
+                            ChannelLevel.ExecuteProtocol(new STP(), CurrentDevice.DeviceObject);
+                            ChannelLevel.ProccessingCash(new STP(), CurrentDevice.DeviceObject.Cash, CurrentDevice.DeviceObject);
                             break;
                         }
                     case DeviceType.Router:
