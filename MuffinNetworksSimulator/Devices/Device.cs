@@ -28,7 +28,12 @@ namespace MuffinNetworksSimulator
     /// </summary>
     abstract class Device
     {
-       
+        /// <summary>
+        /// Иницализация уровней модели
+        /// </summary>
+        public ChannelLevel ChannelLevel;
+
+
         public DeviceType Type;                         // Индекс типа устройства
         public int Id;                                  // Id устройства
         public Port[] DataPorts;                        // Массив портов
@@ -42,7 +47,7 @@ namespace MuffinNetworksSimulator
         /// <summary>
         /// Свойства таймера реального времени
         /// </summary>
-        public static TimerCallback tm;
+        public TimerCallback tm;
         public Timer timer;
 
         /// <summary>
@@ -59,6 +64,9 @@ namespace MuffinNetworksSimulator
             this.CashBPDU = new List<BPDU>();
             this.MACAdress = Other.GenerateMacAdress();
             this.IsSniffering = false;
+
+            //Инициализация канального уровня
+            ChannelLevel = new ChannelLevel();
         }
     }
 }

@@ -58,17 +58,6 @@ namespace MuffinNetworksSimulator
             LastPoint
         }
 
-        /// <summary>
-        /// Инициализация уровней сети
-        /// </summary>
-        static ChannelLevel ChannelLevel = new ChannelLevel();
-
-        /// <summary>
-        /// Инициализация таймера реального времени
-        /// </summary>
-        static TimerCallback tm = new TimerCallback(RealTime);
-        Timer timer = new Timer(tm, 0, 0, 1000);
-
         /*-----------------------------------------------------------------------------------------------------------------------------*/
         /*--------------------------------------------------------------ПЕРЕМЕННЫЕ-----------------------------------------------------*/
         /*-----------------------------------------------------------------------------------------------------------------------------*/
@@ -637,34 +626,6 @@ namespace MuffinNetworksSimulator
                     }
                 }
             }                          
-        }
-
-        /// <summary>
-        /// Срабатывает, каждый интервал срабатывания таймера
-        /// </summary>
-        /// <param name="obj">Просто, какой объект</param>
-        private static void RealTime(object obj)
-        {
-            foreach(var CurrentDevice in CanvasDeviceList)
-            {
-                switch (CurrentDevice.DeviceObject.Type)
-                {
-                    case DeviceType.Computer:
-                        {
-                            break;       
-                        }
-                    case DeviceType.Switch:
-                        {
-                            ChannelLevel.ExecuteProtocol(new STP(), CurrentDevice.DeviceObject);
-                            ChannelLevel.ProccessingCash(new STP(), CurrentDevice.DeviceObject.Cash, CurrentDevice.DeviceObject);
-                            break;
-                        }
-                    case DeviceType.Router:
-                        {
-                            break;
-                        }
-                }
-            }                       
-        }
+        }      
     }
 }

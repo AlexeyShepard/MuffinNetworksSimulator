@@ -33,18 +33,18 @@ namespace MuffinNetworksSimulator
             this.DataPorts = new Port[8];
             for (int i = 0; i < 8; i++) DataPorts[i] = new Port(i);
 
-            tm = new TimerCallback(RealTime);
-            timer = new Timer(tm, 0, 0, 1000);
+            timer = new Timer(RealTime, 0, 0, 1000);
         }
 
         /// <summary>
         /// Срабатывает, каждый интервал срабатывания таймера
         /// </summary>
         /// <param name="obj">Просто, какой объект</param>
-        private static void RealTime(object obj)
+        private void RealTime(object obj)
         {
-            
-            
+            //MessageBox.Show("Работает!");
+            ChannelLevel.ExecuteProtocol(new STP(), this);
+            ChannelLevel.ProccessingCash(new STP(), this.Cash, this);
         }
     }
 }
