@@ -25,6 +25,10 @@ namespace MuffinNetworksSimulator
 
         public bool RootSwitch;             //Является ли этот switch root'ом
 
+        public bool RSConnnection;          //Соединение с root мостом
+        public int RSConnectionCheck;       //Отсчёт для проверки соединения с root мостом
+
+
         public Switch(int id, DeviceType type) : base(id, type)
         {
             this.DeviceIDToRetranslate = this.Id;
@@ -32,6 +36,9 @@ namespace MuffinNetworksSimulator
             this.RootSwitch = true;
             this.DataPorts = new Port[8];
             for (int i = 0; i < 8; i++) DataPorts[i] = new Port(i);
+
+            this.RSConnnection = false;
+            this.RSConnectionCheck = 0;
 
             timer = new Timer(RealTime, 0, 0, 1000);
         }

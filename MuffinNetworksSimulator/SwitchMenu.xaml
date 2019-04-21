@@ -120,6 +120,10 @@
                             <TextBlock Text="Path cost to retranslate: "/>
                             <TextBlock x:Name="TbPathCostToRetranslate" Margin="5 0 0 0"/>
                         </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="Root switch connection: "/>
+                            <TextBlock x:Name="TbRSConnection" Margin="5 0 0 0"/>
+                        </StackPanel>
                     </StackPanel>
                 </TabItem.Content>
             </TabItem>

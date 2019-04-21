@@ -47,6 +47,7 @@ namespace MuffinNetworksSimulator
             TbBridgePriority.Text = ((Switch)CanvasDeviceCash.DeviceObject).Id.ToString();
             TbRootIdToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).DeviceIDToRetranslate.ToString();
             TbPathCostToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).PathCostToRetranslate.ToString();
+            TbRSConnection.Text = ((Switch)CanvasDeviceCash.DeviceObject).RSConnnection.ToString();
 
             Title = ((CanvasDevice)CanvasDevice).DeviceObject.Type.ToString() + " " + ((CanvasDevice)CanvasDevice).DeviceObject.MACAdress;
 
@@ -128,6 +129,7 @@ namespace MuffinNetworksSimulator
             TbIsRoot.Text = ((Switch)CanvasDeviceCash.DeviceObject).RootSwitch.ToString();
             TbRootIdToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).DeviceIDToRetranslate.ToString();
             TbPathCostToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).PathCostToRetranslate.ToString();
+            TbRSConnection.Text = ((Switch)CanvasDeviceCash.DeviceObject).RSConnnection.ToString();
 
 
             DGBPDU.ItemsSource = ((CanvasDevice)CanvasDeviceCash).DeviceObject.CashBPDU.ToList();

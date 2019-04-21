@@ -470,7 +470,7 @@ namespace MuffinNetworksSimulator
                                     if (Port.Device.Equals(CvsObj))
                                     {
                                         Port.Device = null;
-                                        Port.PortStpRole = PortSTPRole.NondesignatedPort;
+                                        //Port.PortStpRole = PortSTPRole.NondesignatedPort;
                                         break;
                                     }
                                 }                                
@@ -489,7 +489,7 @@ namespace MuffinNetworksSimulator
                                     if (Port.Device.Equals(CvsObj))
                                     {
                                         Port.Device = null;
-                                        Port.PortStpRole = PortSTPRole.NondesignatedPort;
+                                        //Port.PortStpRole = PortSTPRole.NondesignatedPort;
                                         break;
                                     }
                                 }                                   
