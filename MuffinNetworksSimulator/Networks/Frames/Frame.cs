@@ -8,7 +8,9 @@ namespace MuffinNetworksSimulator.Networks.Frames
 {
     enum FrameType{
         Ethernet = 0,
-        BPDU
+        BPDU,
+        TCA,
+        TCN
     }
     
     /// <summary>

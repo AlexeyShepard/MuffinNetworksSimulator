@@ -73,6 +73,8 @@
     </ApplicationDefinition>
     <Compile Include="Networks\Frames\BPDU.cs" />
     <Compile Include="Networks\Frames\Frame.cs" />
+    <Compile Include="Networks\Frames\TCA.cs" />
+    <Compile Include="Networks\Frames\TCN.cs" />
     <Compile Include="Networks\ModelLayers\ChannelLevel.cs" />
     <Compile Include="Networks\ModelLayers\IModelLayer.cs" />
     <Compile Include="Networks\ModelLayers\PhysicalLayer.cs" />

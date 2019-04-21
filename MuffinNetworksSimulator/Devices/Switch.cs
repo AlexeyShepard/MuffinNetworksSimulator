@@ -49,7 +49,6 @@ namespace MuffinNetworksSimulator
         /// <param name="obj">Просто, какой объект</param>
         private void RealTime(object obj)
         {
-            //MessageBox.Show("Работает!");
             ChannelLevel.ExecuteProtocol(new STP(), this);
             ChannelLevel.ProccessingCash(new STP(), this.Cash, this);
         }

@@ -58,6 +58,12 @@ namespace MuffinNetworksSimulator
             LastPoint
         }
 
+        /// <summary>
+        /// Инициализация таймера
+        /// </summary>
+        static TimerCallback tm = new TimerCallback(RealTime);
+        Timer timer = new Timer(tm, 0, 0, 1000);
+
         /*-----------------------------------------------------------------------------------------------------------------------------*/
         /*--------------------------------------------------------------ПЕРЕМЕННЫЕ-----------------------------------------------------*/
         /*-----------------------------------------------------------------------------------------------------------------------------*/
@@ -626,6 +632,26 @@ namespace MuffinNetworksSimulator
                     }
                 }
             }                          
-        }      
+        }
+
+        /// <summary>
+        /// Срабатывает, каждый интервал срабатывания таймера
+        /// </summary>
+        /// <param name="obj">Просто, какой объект</param>
+        private static void RealTime(object obj)
+        {
+            /*foreach(var Wire in CanvasWireList)
+            {
+                foreach(var Port in Wire.Device1.DeviceObject.DataPorts)
+                {
+                    if (Port.PortStpRole.Equals(PortSTPRole.DisabledPort)) Wire.CanvasObject.Stroke = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Gray");
+
+                }
+                foreach (var Port in Wire.Device2.DeviceObject.DataPorts)
+                {
+                    if (Port.PortStpRole.Equals(PortSTPRole.DisabledPort)) Wire.CanvasObject.Stroke = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Gray");
+                }
+            }*/   
+        }
     }
 }
