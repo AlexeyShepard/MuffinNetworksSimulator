@@ -49,6 +49,8 @@ namespace MuffinNetworksSimulator
         /// <param name="obj">Просто, какой объект</param>
         private void RealTime(object obj)
         {
+            foreach (var Port in this.DataPorts) if (Port.Device == null && this.RootSwitch) Port.PortStpRole = PortSTPRole.NondesignatedPort;
+
             ChannelLevel.ExecuteProtocol(new STP(), this);
             ChannelLevel.ProccessingCash(new STP(), this.Cash, this);
         }

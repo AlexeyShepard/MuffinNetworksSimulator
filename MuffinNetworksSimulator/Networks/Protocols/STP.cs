@@ -145,6 +145,7 @@ namespace MuffinNetworksSimulator.Networks.Protocols
                                 if (Port.Device.DeviceObject.MACAdress == ((BPDU)Frame).SourceAddress && Port.PortStpRole.Equals(PortSTPRole.RootPort) && !((Switch)Device).RootSwitch)
                                 {
                                     ((Switch)Device).RSConnnection = true;
+                                    ((Switch)Device).RSConnectionCheck = 0;
                                 }
                             }                            
                         }
@@ -155,6 +156,7 @@ namespace MuffinNetworksSimulator.Networks.Protocols
             //Контрольная проверка соедиения с root мостом
             if (!((Switch)Device).RSConnnection && ((Switch)Device).RSConnectionCheck == 10)
             {
+                //MessageBox.Show("Произошла потеря");
                 ((Switch)Device).RootSwitch = true;
                 ((Switch)Device).DeviceIDToRetranslate = ((Switch)Device).Id;
                 ((Switch)Device).PathCostToRetranslate = 0;
@@ -162,6 +164,7 @@ namespace MuffinNetworksSimulator.Networks.Protocols
                 foreach (var Port in Device.DataPorts) Port.PortStpRole = PortSTPRole.NondesignatedPort;
 
                 ((Switch)Device).RSConnectionCheck = 0;
+                ((Switch)Device).RSConnnection = false;
             }
 
             if (((Switch)Device).RSConnectionCheck == 10) ((Switch)Device).RSConnectionCheck = 0;

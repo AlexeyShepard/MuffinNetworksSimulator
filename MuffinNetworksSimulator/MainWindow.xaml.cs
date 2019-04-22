@@ -507,6 +507,8 @@ namespace MuffinNetworksSimulator
                     //Удаление устройства
                     CanvasDeviceList.Remove(CvsObj);
                     CvsWorkspace.Children.Remove(CvsObj.CanvasObject);
+                    //Отключение таймера
+                    CvsObj.DeviceObject.timer.Dispose();
                     SelectedCanvasObjectId = -1;
                 }
             }
@@ -603,7 +605,7 @@ namespace MuffinNetworksSimulator
                                 double PointY = Canvas.GetTop((UIElement)sender) + 25;
                                 Point EndPoint = new Point(PointX, PointY);
                                 LineGeometry lineGeometry = new LineGeometry(CashStartPoint, EndPoint);
-                                CashWire.Stroke = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Black");
+                                CashWire.Stroke = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Gray");
                                 CashWire.StrokeThickness = 3;
                                 CashWire.Data = lineGeometry;
 
@@ -640,18 +642,50 @@ namespace MuffinNetworksSimulator
         /// <param name="obj">Просто, какой объект</param>
         private static void RealTime(object obj)
         {
-            /*foreach(var Wire in CanvasWireList)
+            foreach(var Wire in CanvasWireList)
             {
                 foreach(var Port in Wire.Device1.DeviceObject.DataPorts)
                 {
-                    if (Port.PortStpRole.Equals(PortSTPRole.DisabledPort)) Wire.CanvasObject.Stroke = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Gray");
-
+                    if(Port.Device != null)
+                    {
+                        if (Port.PortStpRole.Equals(PortSTPRole.DesignatedPort) && Port.Device.Equals(Wire.Device2))
+                        {
+                            Wire.CanvasObject.Dispatcher.Invoke(new Action(() =>
+                            {
+                                Wire.CanvasObject.Stroke = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Black");
+                            }));
+                            break;
+                        }
+                        else if (Port.PortStpRole.Equals(PortSTPRole.DisabledPort) && Port.Device.Equals(Wire.Device2))
+                        {
+                            Wire.CanvasObject.Dispatcher.Invoke(new Action(() =>
+                            {
+                                Wire.CanvasObject.Stroke = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Gray");
+                            }));
+                        }
+                    }                  
                 }
                 foreach (var Port in Wire.Device2.DeviceObject.DataPorts)
                 {
-                    if (Port.PortStpRole.Equals(PortSTPRole.DisabledPort)) Wire.CanvasObject.Stroke = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Gray");
+                    if(Port.Device != null)
+                    {
+                        if (Port.PortStpRole.Equals(PortSTPRole.DesignatedPort) && Port.Device.Equals(Wire.Device1))
+                        {
+                            Wire.CanvasObject.Dispatcher.Invoke(new Action(() =>
+                            {
+                                Wire.CanvasObject.Stroke = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Black");
+                            }));
+                        }
+                        else if (Port.PortStpRole.Equals(PortSTPRole.DisabledPort) && Port.Device.Equals(Wire.Device1))
+                        {
+                            Wire.CanvasObject.Dispatcher.Invoke(new Action(() =>
+                            {
+                                Wire.CanvasObject.Stroke = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Gray");
+                            }));
+                        }
+                    }                   
                 }
-            }*/   
+            }   
         }
     }
 }
