@@ -92,7 +92,13 @@
                     <TextBlock Text="Sniffer"/>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <DataGrid x:Name="DGSniffer" AutoGenerateColumns="true">
+                    <DataGrid x:Name="DGSniffer" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Source adress" Binding="{Binding SourceAddress}"/>
+                            <DataGridTextColumn Header="Destination adress" Binding="{Binding DestinationAdress}"/>
+                            <DataGridTextColumn Header="Frame type" Binding="{Binding FrameType}"/>
+                            <DataGridTextColumn Header="Time" Binding="{Binding Time}"/>
+                        </DataGrid.Columns>
                     </DataGrid>
                 </TabItem.Content>
             </TabItem>
@@ -101,8 +107,11 @@
                     <TextBlock Text="Ports"/>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <DataGrid x:Name="DGPorts" AutoGenerateColumns="True">
-
+                    <DataGrid x:Name="DGPorts" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Port id" Binding="{Binding ID}"/>
+                            <DataGridTextColumn Header="STP role" Binding="{Binding PortStpRole}"/>
+                        </DataGrid.Columns>
                     </DataGrid>
                 </TabItem.Content>
             </TabItem>
