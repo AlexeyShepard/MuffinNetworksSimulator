@@ -72,12 +72,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Networks\Frames\BPDU.cs" />
+    <Compile Include="Networks\Frames\Ethernet.cs" />
     <Compile Include="Networks\Frames\Frame.cs" />
     <Compile Include="Networks\Frames\TCA.cs" />
     <Compile Include="Networks\Frames\TCN.cs" />
     <Compile Include="Networks\ModelLayers\ChannelLevel.cs" />
     <Compile Include="Networks\ModelLayers\IModelLayer.cs" />
+    <Compile Include="Networks\ModelLayers\NetworkLevel.cs" />
     <Compile Include="Networks\ModelLayers\PhysicalLayer.cs" />
+    <Compile Include="Networks\Packets\Packet.cs" />
+    <Compile Include="Networks\Protocols\Ethernet.cs" />
     <Compile Include="Networks\Protocols\IProtocols.cs" />
     <Compile Include="Networks\Protocols\SF.cs" />
     <Compile Include="Networks\Protocols\STP.cs" />

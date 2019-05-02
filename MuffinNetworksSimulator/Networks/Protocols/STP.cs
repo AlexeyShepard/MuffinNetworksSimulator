@@ -168,8 +168,6 @@ namespace MuffinNetworksSimulator.Networks.Protocols
             }
 
             if (((Switch)Device).RSConnectionCheck == 10) ((Switch)Device).RSConnectionCheck = 0;
-
-            Cash.Clear();
         }
 
         /// <summary>

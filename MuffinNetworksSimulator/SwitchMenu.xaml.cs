@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MuffinNetworksSimulator.Networks.Frames;
+using MuffinNetworksSimulator.Networks.ModelLayer;
+using MuffinNetworksSimulator.Networks.Protocols;
 
 namespace MuffinNetworksSimulator
 {
@@ -147,12 +149,49 @@ namespace MuffinNetworksSimulator
             DGSnifferCash.ItemsSource = CanvasDeviceCash.DeviceObject.Sniffer.ToList();
         }
 
+        /// <summary>
+        /// Включение/Отключение режима снифферинга
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnSniffering_Click(object sender, RoutedEventArgs e)
         {
             CanvasDeviceCash.DeviceObject.IsSniffering = !CanvasDeviceCash.DeviceObject.IsSniffering;
 
             if (CanvasDeviceCash.DeviceObject.IsSniffering) BtnSniffering.Content = "Stop Sniffer";
             else BtnSniffering.Content = "Start Sniffer";
+        }
+
+        /// <summary>
+        /// Отправка фрейма для проверки связи
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSendEthernetFrame_Click(object sender, RoutedEventArgs e)
+        {
+            bool RecordExist = false; //Cуществование записи
+            PhysicalLayer physicalLayer = new PhysicalLayer();
+            //Создание кадра для проверки подключения
+            Networks.Frames.Ethernet ethernet = new Networks.Frames.Ethernet(CanvasDeviceCash.DeviceObject.MACAdress, TxbMacaddressToTest.Text, FrameType.Ethernet, DateTime.Now.TimeOfDay);
+            foreach(var RouteRecord in ((Switch)CanvasDeviceCash.DeviceObject).RoutingTable)
+            {
+                if(RouteRecord.DestinationAddress == ethernet.DestinationAdress)
+                {
+                    physicalLayer.ExecuteProtocol(new SF(), ((Switch)CanvasDeviceCash.DeviceObject).DataPorts[RouteRecord.PortId].Device.DeviceObject, ethernet);
+                    RecordExist = true;
+                    break;
+                } 
+            }
+            //Если не 
+            if (!RecordExist)
+            {
+                
+            } 
+        }
+
+        private void BtnResetStatusConnection_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

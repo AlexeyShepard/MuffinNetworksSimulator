@@ -12,7 +12,7 @@ namespace MuffinNetworksSimulator.Networks.ModelLayer
     /// Описывает функционал уровней модели TCP/IP
     /// </summary>
     interface IModelLayer
-    {
+    {            
         /// <summary>
         /// Для реализации протоколов канального уровня
         /// </summary>

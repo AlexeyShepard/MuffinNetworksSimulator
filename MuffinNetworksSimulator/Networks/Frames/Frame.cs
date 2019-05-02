@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MuffinNetworksSimulator.Networks.Packets;
 
 namespace MuffinNetworksSimulator.Networks.Frames
 {
@@ -21,6 +22,8 @@ namespace MuffinNetworksSimulator.Networks.Frames
         public string SourceAddress { get; set; }               //Адрес источника
         public string DestinationAdress { get; set; }           //Адрес назначения
         public FrameType FrameType { get; set; }                //Тип фрейма
-        public TimeSpan Time { get; set; }                  //Время прибытия кадра
+        public TimeSpan Time { get; set; }                      //Время прибытия кадра
+
+        public Packet Packet { get; set; }                      //Пакет фрейма
     }
 }

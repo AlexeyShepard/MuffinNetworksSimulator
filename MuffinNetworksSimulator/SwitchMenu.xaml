@@ -138,6 +138,38 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
+                    <TextBlock Text="Ethernet"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="Connection test " Margin="5 0 0 0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <xctk:MaskedTextBox x:Name="TxbMacaddressToTest"
+                                                Width="105"
+                                                Mask="AA:AA:AA:AA:AA:AA"/>
+                            <Button x:Name="BtnSendEthernetFrame"
+                                    Content="Send" 
+                                    Margin="5 0 0 0"
+                                    Click="BtnSendEthernetFrame_Click"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="Status: " 
+                                       Margin="5 0 0 0"/>
+                            <TextBlock x:Name="TxbConnectionStatus"
+                                       Text="Unknown " 
+                                       Margin="5 0 0 0"/>
+                            <Button x:Name="BtnResetStatusConnection"
+                                    Content="Reset" 
+                                    Margin="5 0 0 0"
+                                    Click="BtnResetStatusConnection_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
                     <TextBlock Text="BPDU"/>
                 </TabItem.Header>
                 <TabItem.Content>

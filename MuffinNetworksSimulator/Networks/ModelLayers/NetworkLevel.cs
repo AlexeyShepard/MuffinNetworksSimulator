@@ -9,23 +9,23 @@ using MuffinNetworksSimulator.Networks.Frames;
 namespace MuffinNetworksSimulator.Networks.ModelLayer
 {
     /// <summary>
-    /// Описывает физический уровень
+    /// Описывает сетевой уровень
     /// </summary>
-    class PhysicalLayer : IModelLayer
+    class NetworkLevel : IModelLayer
     {
         public void ExecuteProtocol(IProtocols Protocol, Device Device, Frame Frame)
         {
-            Protocol.Execute(Device, Frame);
+            throw new Exception("Запрещено использование данного метода, на сетевом уровне!");
         }
 
         public void ExecuteProtocol(IProtocols Protocol, Device Device)
         {
-            throw new Exception("Запрещено использование данного метода, на физическом уровне!");
+            throw new Exception("Запрещено использование данного метода, на сетевом уровне!");
         }
 
         public void ProccessingCash(IProtocols Protocol, List<Frame> Cash, Device Device)
         {
-            throw new Exception("Запрещено использование данного метода, на физическом уровне!");
+            throw new Exception("Запрещено использование данного метода, на сетевом уровне!");
         }
     }
 }
