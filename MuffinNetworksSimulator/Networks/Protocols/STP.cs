@@ -97,7 +97,6 @@ namespace MuffinNetworksSimulator.Networks.Protocols
                             BPDU = new BPDU(Device.Id, ((Switch)Device).DeviceIDToRetranslate, Port.ID, ((Switch)Device).PathCostToRetranslate, Device.MACAdress);
                             if (Port.Device != null && !Port.PortStpRole.Equals(PortSTPRole.RootPort))
                             {
-                                //MessageBox.Show("Попёр спам!!");
                                 PhysicalLayer.ExecuteProtocol(new SF(), Port.Device.DeviceObject, BPDU);
                                 exit = true;
                             }

@@ -19,7 +19,7 @@ namespace MuffinNetworksSimulator.Networks.Protocols
         void Execute(Device Device);
 
         /// <summary>
-        /// Для исполнения протокола на физическом уровне
+        /// Для исполнения протокола на физическом/канальном уровне
         /// </summary>
         /// <param name="Device">Устройство на котором происходит исполнение</param>
         /// <param name="Frame">Кадр для обработки</param>

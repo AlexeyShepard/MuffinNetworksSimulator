@@ -23,7 +23,6 @@ namespace MuffinNetworksSimulator.Networks.Protocols
             //Время отправки фрейма
             Frame.Time = DateTime.Now.TimeOfDay;
             Device.Cash.Add(Frame);
-            Device.CashBPDU.Add((BPDU)Frame);
             //Если запущен режим Sniffering
             if (Device.IsSniffering) Device.Sniffer.Add(Frame);
         }

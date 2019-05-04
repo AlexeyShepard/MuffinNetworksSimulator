@@ -379,6 +379,16 @@ namespace MuffinNetworksSimulator
             }
         }
 
+        /// <summary>
+        /// Закрытие программы, со всеми её окнами
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
         /*-----------------------------------------------------------------------------------------------------------------------------*/
         /*--------------------------------------------------------------ПРОЦЕДУРЫ------------------------------------------------------*/
         /*-----------------------------------------------------------------------------------------------------------------------------*/
@@ -642,7 +652,7 @@ namespace MuffinNetworksSimulator
         /// <param name="obj">Просто, какой объект</param>
         private static void RealTime(object obj)
         {
-            foreach(var Wire in CanvasWireList)
+            foreach(var Wire in CanvasWireList.ToList())
             {
                 foreach(var Port in Wire.Device1.DeviceObject.DataPorts)
                 {

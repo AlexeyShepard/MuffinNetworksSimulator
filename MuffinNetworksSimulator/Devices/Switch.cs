@@ -60,7 +60,8 @@ namespace MuffinNetworksSimulator
 
             ChannelLevel.ExecuteProtocol(new STP(), this);
             ChannelLevel.ProccessingCash(new STP(), this.Cash, this);
-            Cash.Clear();
+            ChannelLevel.ProccessingCash(new Ethernet(), this.Cash, this);
+            this.Cash.Clear();
         }
     }
 
@@ -69,8 +70,8 @@ namespace MuffinNetworksSimulator
     /// </summary>
     class EthernetRoutingTableRecord
     {
-        public string DestinationAddress;   //Адрес получателя
-        public int PortId;                  //Порт на котором расположен получатель
+        public string DestinationAddress { get; set; }   //Адрес получателя
+        public int PortId                { get; set; }   //Порт на котором расположен получатель
 
         /// <summary>
         /// Конструктор записи таблицы

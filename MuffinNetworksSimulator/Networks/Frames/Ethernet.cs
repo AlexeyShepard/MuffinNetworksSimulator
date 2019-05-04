@@ -11,6 +11,9 @@ namespace MuffinNetworksSimulator.Networks.Frames
     /// </summary>
     class Ethernet : Frame
     {
+        public int PortDstId;   //Id порта на который прибыл кадр
+        public bool ACK;        //Является ли пакет ответом
+        
         /// <summary>
         /// Конструктор ethernet фрейма для проверки подключения
         /// </summary>
@@ -24,6 +27,7 @@ namespace MuffinNetworksSimulator.Networks.Frames
             this.DestinationAdress = DstAddress;
             this.FrameType = Type;
             this.Time = timeSpan;
+            this.ACK = false;
         }         
     }
 }

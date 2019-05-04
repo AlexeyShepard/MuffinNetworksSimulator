@@ -8,7 +8,8 @@
         x:Class="MuffinNetworksSimulator.MainWindow"
         mc:Ignorable="d"
         Title="MuffinNetworksSimulator" 
-        WindowState="Maximized">
+        WindowState="Maximized"
+        Closed="Window_Closed">
     <Window.Resources>
         <!--Cтиль главного меню. Начало-->
         <ControlTemplate x:Key="MenuItemControlTemplate" TargetType="{x:Type MenuItem}">

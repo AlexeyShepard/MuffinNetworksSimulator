@@ -24,6 +24,14 @@ namespace MuffinNetworksSimulator.Networks.ModelLayer
         }
 
         /// <summary>
+        /// Исполнения протокола канального уровня, в случае если надо передать готовый пакет
+        /// </summary>
+        public void ExecuteProtocol(IProtocols Protocol, Device Device, Frame Frame)
+        {
+            Protocol.Execute(Device, Frame);
+        }
+
+        /// <summary>
         /// Обработка кэша устройства протколом
         /// </summary>
         /// <param name="Protocol">Протокол обработки</param>
@@ -33,12 +41,5 @@ namespace MuffinNetworksSimulator.Networks.ModelLayer
             Protocol.Processing(Cash, Device);
         }
 
-        /// <summary>
-        /// Чтобы было
-        /// </summary>
-        public void ExecuteProtocol(IProtocols Protocol, Device Device, Frame Frame)
-        {
-            throw new Exception("Запрещено использование данного метода, на канальном уровне!");
-        }
     }
 }

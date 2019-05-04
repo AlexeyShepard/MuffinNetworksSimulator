@@ -23,13 +23,8 @@ namespace MuffinNetworksSimulator
     /// </summary>
     public partial class SwitchMenu : Window
     {
-        /// <summary>
-        /// Инициализация таймера реального времени
-        /// </summary>
-        //static TimerCallback tm = new TimerCallback(RealTime);
-        //Timer timer = new Timer(tm, 1000, 1000, 1000);
-        static CanvasDevice CanvasDeviceCash;
-        static DataGrid DGSnifferCash;
+        static CanvasDevice CanvasDeviceCash;   //Кэш для устройства
+        static DataGrid DGSnifferCash;          //Кэш таблицы сниффера
 
         /// <summary>
         /// Конструктор для инициализации окна
@@ -42,6 +37,8 @@ namespace MuffinNetworksSimulator
             DGSniffer.ItemsSource = new List<Networks.Frames.Frame>();
             DGSnifferCash = DGSniffer;
             CanvasDeviceCash = (CanvasDevice)CanvasDevice;
+            DGCash.ItemsSource = CanvasDeviceCash.DeviceObject.Cash.ToList();
+            DGRoutingTable.ItemsSource = ((Switch)CanvasDeviceCash.DeviceObject).RoutingTable.ToList();
             TxbMacaddress.Text = CanvasDeviceCash.DeviceObject.MACAdress;
             DGSniffer.ItemsSource = ((CanvasDevice)CanvasDevice).DeviceObject.Sniffer.ToList();
             DGPorts.ItemsSource = ((CanvasDevice)CanvasDevice).DeviceObject.DataPorts.ToList();
@@ -128,6 +125,10 @@ namespace MuffinNetworksSimulator
         {
             BindingOperations.EnableCollectionSynchronization(CanvasDeviceCash.DeviceObject.Sniffer, DGSnifferCash);
             DGSnifferCash.ItemsSource = CanvasDeviceCash.DeviceObject.Sniffer.ToList();
+            BindingOperations.EnableCollectionSynchronization(CanvasDeviceCash.DeviceObject.Cash, DGCash);
+            DGCash.ItemsSource = CanvasDeviceCash.DeviceObject.Cash.ToList();
+            BindingOperations.EnableCollectionSynchronization(((Switch)CanvasDeviceCash.DeviceObject).RoutingTable, DGRoutingTable);
+            DGRoutingTable.ItemsSource = ((Switch)CanvasDeviceCash.DeviceObject).RoutingTable.ToList();
             TbIsRoot.Text = ((Switch)CanvasDeviceCash.DeviceObject).RootSwitch.ToString();
             TbRootIdToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).DeviceIDToRetranslate.ToString();
             TbPathCostToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).PathCostToRetranslate.ToString();
@@ -169,24 +170,9 @@ namespace MuffinNetworksSimulator
         /// <param name="e"></param>
         private void BtnSendEthernetFrame_Click(object sender, RoutedEventArgs e)
         {
-            bool RecordExist = false; //Cуществование записи
-            PhysicalLayer physicalLayer = new PhysicalLayer();
-            //Создание кадра для проверки подключения
+            ChannelLevel channelLevel = new ChannelLevel();
             Networks.Frames.Ethernet ethernet = new Networks.Frames.Ethernet(CanvasDeviceCash.DeviceObject.MACAdress, TxbMacaddressToTest.Text, FrameType.Ethernet, DateTime.Now.TimeOfDay);
-            foreach(var RouteRecord in ((Switch)CanvasDeviceCash.DeviceObject).RoutingTable)
-            {
-                if(RouteRecord.DestinationAddress == ethernet.DestinationAdress)
-                {
-                    physicalLayer.ExecuteProtocol(new SF(), ((Switch)CanvasDeviceCash.DeviceObject).DataPorts[RouteRecord.PortId].Device.DeviceObject, ethernet);
-                    RecordExist = true;
-                    break;
-                } 
-            }
-            //Если не 
-            if (!RecordExist)
-            {
-                
-            } 
+            channelLevel.ExecuteProtocol(new Networks.Protocols.Ethernet(), CanvasDeviceCash.DeviceObject, ethernet);
         }
 
         private void BtnResetStatusConnection_Click(object sender, RoutedEventArgs e)
