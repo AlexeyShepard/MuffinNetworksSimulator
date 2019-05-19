@@ -133,9 +133,6 @@ namespace MuffinNetworksSimulator
             TbRootIdToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).DeviceIDToRetranslate.ToString();
             TbPathCostToRetranslate.Text = ((Switch)CanvasDeviceCash.DeviceObject).PathCostToRetranslate.ToString();
             TbRSConnection.Text = ((Switch)CanvasDeviceCash.DeviceObject).RSConnnection.ToString();
-
-
-            DGBPDU.ItemsSource = ((CanvasDevice)CanvasDeviceCash).DeviceObject.CashBPDU.ToList();
         }
 
         /// <summary>

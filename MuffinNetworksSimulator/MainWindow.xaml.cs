@@ -34,8 +34,6 @@ namespace MuffinNetworksSimulator
         enum ToolMode
         {
             Cursor = 0,
-            SelectZone,
-            MarkZone,
             Delete
         }
         /// <summary>
@@ -155,7 +153,7 @@ namespace MuffinNetworksSimulator
                         LbObjects.IsEnabled = true;
                         break;
                     }
-                case 3:
+                case 1:
                     {
                         this.Cursor = Cursors.No;
                         CurrentMode = ToolMode.Delete;

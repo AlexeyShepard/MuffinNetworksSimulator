@@ -487,13 +487,6 @@
             </MenuItem>
             <MenuItem Header="Edit" 
                       Template="{DynamicResource MenuItemControlTemplate}">
-                <MenuItem Header="Copy" 
-                          Background="#130019" 
-                          BorderThickness="0"/>
-                <MenuItem Header="Paste" 
-                          Background="#130019" 
-                          BorderThickness="0"/>
-                <Separator Style="{DynamicResource SeparatorStyle}"/>
                 <MenuItem Header="Undo" 
                           Background="#130019" 
                           BorderThickness="0"/>
@@ -503,26 +496,6 @@
             </MenuItem>
             <MenuItem Header="Options" 
                       Template="{DynamicResource MenuItemControlTemplate}">
-                <MenuItem Header="Processing ..." 
-                          Background="#130019" 
-                          BorderThickness="0"/>
-            </MenuItem>
-            <MenuItem Header="View" 
-                      Template="{DynamicResource MenuItemControlTemplate}">
-                <MenuItem Header="Zoom" 
-                          Background="#130019" 
-                          BorderThickness="0" 
-                          Template="{DynamicResource SubMenuItemControlTemplate}">
-                    <MenuItem Header="Zoom in" 
-                            Background="#130019" 
-                            BorderThickness="0" />
-                    <MenuItem Header="Zoom out" 
-                            Background="#130019" 
-                            BorderThickness="0"/>
-                    <MenuItem Header="Zoom reset" 
-                            Background="#130019" 
-                            BorderThickness="0"/>
-                </MenuItem>
                 <MenuItem Header="Toolbars"
                           Background="#130019" 
                           BorderThickness="0"
@@ -598,16 +571,6 @@
                                    Width="20" 
                                    Height="20"
                                    Margin="5"/>
-                        </ListBoxItem>
-                        <ListBoxItem Style="{DynamicResource ListBoxItemStyle}">
-                            <Image Source="icon/vyd.png" 
-                                   Width="30" 
-                                   Height="30"/>
-                        </ListBoxItem>
-                        <ListBoxItem Style="{DynamicResource ListBoxItemStyle}"> 
-                            <Image Source="icon/drawrect.png" 
-                                   Width="30" 
-                                   Height="30"/>
                         </ListBoxItem>
                         <ListBoxItem Style="{DynamicResource ListBoxItemStyle}">
                             <Image Source="icon/delete.png" 
